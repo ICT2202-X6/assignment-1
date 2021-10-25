@@ -1,7 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 from geoip import geolite2
 from scapy.all import *
@@ -14,9 +10,29 @@ cobalt_list=['47.exe', "1901.bin", "1901s.bin", '2701.bin', "27012.bin", "0102.b
              "fls.exe", "6fokjewkj.exe", "6gdwwv.exe", "6lavfdk.exe", "6yudfgh.exe"]
 
 
+def http_checker(pkt):
+    if pkt.http:
+        if pkt[pkt.transport_layer].srcport != 80 and pkt[pkt.transport_layer].srcport != 443:
+            print("Unusual HTTP Traffic")
+            print("Infected IP:" + pkt.ip.src)
+            print("Suspected URL: " + pkt.http.host)
+            print("Communicating From:" + pkt[pkt.transport_layer].srcport)
+            print("Malicious HTTP Request:" + pkt.http.request_uri)
+
+# might want to include virus total api to check suspected URLs
+def find_unusual_http():
+    pyshark_cap.apply_on_packets(http_checker, timeout=100)
+    print("return to menu ? (y/n)")
+    x = str(input())
+    if x == 'y':
+        print_menu()
+    else:
+        exit()
+
+
 def malware_checker(pkt):
     if pkt.http.request_method == "GET":
-        if cobalt_list in pkt.http.host:
+        if cobalt_list in pkt.http.request_uri:
             print("Infected IP:" + pkt.ip.src)
             print("Communicating From:" + pkt[pkt.transport_layer].srcport)
             print("Malicious HTTP Request:" + pkt.http.request_uri)
@@ -152,6 +168,7 @@ def print_menu(pcap):
     print("1. View Sessions ")
     print("2. Check for LOKIBot IOCs ")
     print("3. Check for Hancitor Malware IOCs")
+    print("4. Check for Unusual HTTP traffic")
     print("0. Help \n")
     menu(pcap)
 
@@ -164,6 +181,8 @@ def menu(pcap):
         find_Loki_packet()
     elif x == 3:
         find_Hancitor_packet()
+    elif x == 4:
+        find_unusual_http()
     elif x == 0:
         help_description(pcap)
 
@@ -186,7 +205,5 @@ if __name__ == '__main__':
         pcap_file = load_pcap_file(fileLocation)
         # print menu
         print_menu(pcap_file)
-
-
     else:
         print("File does not exist")
