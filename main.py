@@ -1,19 +1,18 @@
 
 from geoip import geolite2
 from scapy.all import *
-import pprint
+from pprint import pprint
 import sys
 import pyshark
 from base64 import urlsafe_b64encode
 from virustotal_python import Virustotal
 
 
-
 #file names from https://kc.mcafee.com/corporate/index?page=content&id=KB94571&locale=en_US
 cobalt_list=['47.exe', "1901.bin", "1901s.bin", '2701.bin', "27012.bin", "0102.bin", "0102s.bin", "0902.bin", "0902s.bin",
              "fls.exe", "6fokjewkj.exe", "6gdwwv.exe", "6lavfdk.exe", "6yudfgh.exe"]
 
-api_key="1535becddc18e1fac97c7bdc8d8d2a0265d5f3be3646896b0c697b1cb38a6873"
+api_key = "1535becddc18e1fac97c7bdc8d8d2a0265d5f3be3646896b0c697b1cb38a6873"
 vt = Virustotal(api_key, API_VERSION="v3")
 
 
@@ -168,14 +167,14 @@ def find_Loki_packet():
         exit()
 
 
-def ip_location(ipadd, pcap):
+def ip_location(ipadd):
     match = geolite2.lookup(ipadd)
     print(f"IP Address:{ipadd} , Country:{match.country}, Continent:{match.continent}")
-    print_menu(pcap)
+    print_menu()
 
 
 def find_ip_location(pcap):
-    pprint.pprint(pcap.sessions())
+    pprint(pcap.sessions())
     print("Please enter the IP address you would like the Location identified")
     x = input()
     ip_location(x, pcap)
@@ -187,17 +186,17 @@ def find_ip_location(pcap):
         exit()
 
 
-def help_description(pcap):
+def help_description():
     print("\nOption 1 : Option 1 Description")
     print("Option 2 : Option 1 Description")
     print("Option 3 : Option 1 Description")
     print("Press 0 to return to menu")
     x = int(input())
     if x == 0:
-        print_menu(pcap)
+        print_menu()
 
 
-def print_menu(pcap):
+def print_menu():
     print("Packet Analysis:")
     print("Choose an Option:")
     print("1. View Sessions ")
@@ -205,7 +204,7 @@ def print_menu(pcap):
     print("3. Check for Hancitor Malware IOCs")
     print("4. Check for Unusual HTTP traffic")
     print("0. Help \n")
-    menu(pcap)
+    menu(pcap_file)
 
 
 def menu(pcap):
