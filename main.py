@@ -4,10 +4,40 @@ from scapy.all import *
 import pprint
 import sys
 import pyshark
+from base64 import urlsafe_b64encode
+from virustotal_python import Virustotal
+
+
 
 #file names from https://kc.mcafee.com/corporate/index?page=content&id=KB94571&locale=en_US
 cobalt_list=['47.exe', "1901.bin", "1901s.bin", '2701.bin', "27012.bin", "0102.bin", "0102s.bin", "0902.bin", "0902s.bin",
              "fls.exe", "6fokjewkj.exe", "6gdwwv.exe", "6lavfdk.exe", "6yudfgh.exe"]
+
+api_key="1535becddc18e1fac97c7bdc8d8d2a0265d5f3be3646896b0c697b1cb38a6873"
+vt = Virustotal(api_key, API_VERSION="v3")
+
+
+def virus_total_checker():
+    print("Enter the url you want checked ")
+    urlstring = str(input())
+    try:
+        # Send URL to VirusTotal for analysis
+        resp = vt.request("urls", data={"url": urlstring}, method="POST")
+        # URL safe encode URL in base64 format
+        # https://developers.virustotal.com/v3.0/reference#url
+        url_id = urlsafe_b64encode(urlstring.encode()).decode().strip("=")
+        # Obtain the analysis results for the URL using the url_id
+        analysis_resp = vt.request(f"urls/{url_id}")
+        domain_resp = vt.request(f"domains/{urlstring}")
+
+        pprint(analysis_resp.object_type)
+        pprint(analysis_resp.data)
+        pprint(resp.data)
+
+    except:
+        print(f"An error occurred")
+        print_menu()
+
 
 
 def http_checker(pkt):
@@ -19,12 +49,17 @@ def http_checker(pkt):
             print("Communicating From:" + pkt[pkt.transport_layer].srcport)
             print("Malicious HTTP Request:" + pkt.http.request_uri)
 
+
 # might want to include virus total api to check suspected URLs
 def find_unusual_http():
     pyshark_cap.apply_on_packets(http_checker, timeout=100)
-    print("return to menu ? (y/n)")
+    print("Options:")
+    print("1. Check URL against Virus Total Database (limit 4 per minute)")
+    print("2. Exit")
     x = str(input())
-    if x == 'y':
+    if x == "1":
+        virus_total_checker()
+    elif x == '2':
         print_menu()
     else:
         exit()
