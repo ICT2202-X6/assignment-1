@@ -1,5 +1,4 @@
 
-#from geoip import geolite2
 from scapy.all import *
 from pprint import pprint
 import sys
@@ -10,7 +9,7 @@ from virustotal_python import Virustotal
 
 #file names from https://kc.mcafee.com/corporate/index?page=content&id=KB94571&locale=en_US
 cobalt_list=['47.exe', "1901.bin", "1901s.bin", '2701.bin', "27012.bin", "0102.bin", "0102s.bin", "0902.bin", "0902s.bin",
-             "fls.exe", "6fokjewkj.exe", "6gdwwv.exe", "6lavfdk.exe", "6yudfgh.exe"]
+             "fls.exe", "6fokjewkj.exe", "6gdwwv.exe", "6lavfdk.exe", "6yudfgh.exe", "1602.bin","1602s.bin", "6sufiuerfdvc.exe"]
 
 api_key = "1535becddc18e1fac97c7bdc8d8d2a0265d5f3be3646896b0c697b1cb38a6873"
 vt = Virustotal(api_key, API_VERSION="v3")
@@ -54,7 +53,6 @@ def http_checker(pkt):
         # ignore packets that aren't TCP/UDP or IPv4
         pass
 
-# might want to include virus total api to check suspected URLs
 def find_unusual_http():
     pyshark_cap.apply_on_packets(http_checker, timeout=100)
     print("Options:")
@@ -72,13 +70,13 @@ def find_unusual_http():
 def malware_checker(pkt):
     try:
         if pkt.http.request_method == "GET":
-            if pkt.http.request_uri in cobalt_list:
+            if any(item in pkt.http.request_uri for item in cobalt_list):
                 print("Infected IP:" + pkt.ip.src)
                 print("Communicating From:" + pkt[pkt.transport_layer].srcport)
                 print("Malicious HTTP Request:" + pkt.http.request_uri)
                 print("C2 Server:" + pkt.ip.dst)
                 print("Time:" + str(pkt.sniff_time))
-                print("Traffic Purpose: Possible Hancitor IP Check")
+                print("Traffic Purpose: Possible Malware download")
                 print("\n")
     except AttributeError as e:
         # ignore packets that aren't TCP/UDP or IPv4
@@ -174,17 +172,9 @@ def find_Loki_packet():
         exit()
 
 
-def ip_location(ipadd):
-    match = geolite2.lookup(ipadd)
-    print(f"IP Address:{ipadd} , Country:{match.country}, Continent:{match.continent}")
-    print_menu()
-
 
 def find_ip_location(pcap):
     pprint(pcap.sessions())
-    print("Please enter the IP address you would like the Location identified")
-    x = input()
-    ip_location(x, pcap)
     print("return to menu ? (y/n)")
     x = str(input())
     if x == 'y':
@@ -206,6 +196,7 @@ def help_description():
 def print_menu():
     print("Packet Analysis:")
     print("Choose an Option:")
+    print("type exit to end")
     print("1. View Sessions ")
     print("2. Check for LOKIBot IOCs ")
     print("3. Check for Hancitor Malware IOCs")
@@ -215,17 +206,19 @@ def print_menu():
 
 
 def menu(pcap):
-    x = int(input())
-    if x == 1:
+    x = str(input())
+    if x == "1":
         find_ip_location(pcap)
-    elif x == 2:
+    elif x == "2":
         find_Loki_packet()
-    elif x == 3:
+    elif x == "3":
         find_Hancitor_packet()
-    elif x == 4:
+    elif x == "4":
         find_unusual_http()
-    elif x == 0:
+    elif x == "0":
         help_description(pcap)
+    elif x == "exit":
+        exit()
 
 
 # function to read pcap file
@@ -237,7 +230,13 @@ def load_pcap_file(pcap):
 if __name__ == '__main__':
 
     # taking cli argument for the path of the pcap file currently needs quotation marks for the filepath
-    fileLocation = sys.argv[1]
+    if len(sys.argv)<2:
+        print("Please include pcap file location")
+        print("python3 script.py test.pcap")
+        exit()
+    else:
+        fileLocation = sys.argv[1]
+
     # Checking if the given file location is an actual file
     if os.path.isfile(fileLocation):
         # run the function that loads the pcap file for pyshark
