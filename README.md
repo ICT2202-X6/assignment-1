@@ -9,7 +9,11 @@ This tool requires the following libraries installed to function, Scapy, Pyshark
 Scapy: `pip3 install scapy`  
 Pyshark: `pip3 install pyshark`  
 PPrint: `pip3 install pprintpp`  
-VirusTotal-Python: `pip3 install virustotal-python`  
+VirusTotal-Python: `pip3 install virustotal-python`
+Python Graphics Package: `pip3 install PyX==0.15`
+Python PDF Toolkit: `pip3 install PyX==0.15`
+texlive-binaries to be installed on linux:`apt install texlive-binaries`
+
 
 ## Options 
 ### 1. Session Display
@@ -23,6 +27,9 @@ Hancitor is another very commonly used trojan that is used to load other malware
 
 ### 4. Unusual HTTP Activity 
 Plenty of malware avoid common signatures, which makes it hard to confirm whether traffic is malicious or not, however, there are malwares that use web traffic for malicious purposes but do so using non standard port numbers. This tool filters the pcap file for such traffic. We can then further compare the url with virus total's database and check if it is a known malicious url. The api used is for a free account that only allows for 4 url checks per minute. 
+
+### 5. Sniffing
+
 
 ### Warning
 The pcap files included in this github page, contain malware. It is recommended that if this script is to be used that it should be in a safe and isolated environment like a Linux Virtual Machine. The password for the zip file is "infected". The pcap files are sourced from R3MRUM github page for the Loki traffic and Palo Alto's Unit 42 Github for the Hancitor Traffic.
