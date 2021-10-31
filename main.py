@@ -12,10 +12,11 @@ from virustotal_python import Virustotal
 cobalt_list=['47.exe', "1901.bin", "1901s.bin", '2701.bin', "27012.bin", "0102.bin", "0102s.bin", "0902.bin", "0902s.bin",
              "fls.exe", "6fokjewkj.exe", "6gdwwv.exe", "6lavfdk.exe", "6yudfgh.exe", "1602.bin","1602s.bin", "6sufiuerfdvc.exe"]
 
+#api key for virus total
 api_key = "1535becddc18e1fac97c7bdc8d8d2a0265d5f3be3646896b0c697b1cb38a6873"
 vt = Virustotal(api_key, API_VERSION="v3")
 
-
+#function to check urls against virustotal database for whether it is malicious
 def virus_total_checker():
     print("Enter the url you want checked ")
     urlstring = str(input())
@@ -38,7 +39,7 @@ def virus_total_checker():
         print_menu()
 
 
-
+# filter to check for http traffic from non standard ports  
 def http_checker(pkt):
     try:
         if pkt.http:
@@ -53,7 +54,7 @@ def http_checker(pkt):
     except AttributeError as e:
         # ignore packets that aren't TCP/UDP or IPv4
         pass
-
+# apply filter on to pcap file
 def find_unusual_http():
     pyshark_cap.apply_on_packets(http_checker, timeout=100)
     print("Options:")
@@ -67,7 +68,7 @@ def find_unusual_http():
     else:
         exit()
 
-
+# filter to check for malware being downloaded from web by hancitor by checking a known list of malicious files
 def malware_checker(pkt):
     try:
         if pkt.http.request_method == "GET":
@@ -83,6 +84,7 @@ def malware_checker(pkt):
         # ignore packets that aren't TCP/UDP or IPv4
         pass
 
+#apply filter on pcap file
 def find_Cobalt_packet():
     pyshark_cap.apply_on_packets(malware_checker, timeout=100)
     print("return to menu ? (y/n)")
@@ -92,7 +94,7 @@ def find_Cobalt_packet():
     else:
         exit()
 
-
+# filter to check for hancitor traffic
 def hancitor_filter(pkt):
     # /8/forum.php as of 2020 all hancitor C2 traffic has ended with that.
     # Hancitor first causes an IP address check to api.ipify.org by the infected Windows host
@@ -120,7 +122,7 @@ def hancitor_filter(pkt):
         # ignore packets that aren't TCP/UDP or IPv4
         pass
 
-
+# apply filter onto pcap file
 def find_Hancitor_packet():
     pyshark_cap.apply_on_packets(hancitor_filter, timeout=100)
     print("Check for Possible Cobalt Strike or Ficker Stealer installation by Hancitor ?(y/n)")
@@ -130,7 +132,7 @@ def find_Hancitor_packet():
     else :
         print_menu()
 
-
+# filter to check for lokibot traffic
 def fil_loki(pkt):
     try:
         if pkt.http.request_method == "POST":
@@ -162,7 +164,7 @@ def fil_loki(pkt):
         # ignore packets that aren't TCP/UDP or IPv4
         pass
 
-
+# apply filter on pcap file
 def find_Loki_packet():
     pyshark_cap.apply_on_packets(fil_loki, timeout=100)
     print("return to menu ? (y/n)")
@@ -173,7 +175,7 @@ def find_Loki_packet():
         exit()
 
 
-
+# sort into sessions and print out statistics
 def find_session(pcap):
     pprint(pcap.sessions())
     print("return to menu ? (y/n)")
@@ -183,7 +185,7 @@ def find_session(pcap):
     else:
         exit()
 
-
+# basic descriptions
 def help_description():
     print("\n")
     print("View Sessions : Each session within the PCAP File will be displayed with its respective statistics")
@@ -195,7 +197,7 @@ def help_description():
     if x == 0:
         print_menu()
 
-
+# simple menu
 def print_menu():
     print("PCAP Analysis")
     print("Choose an Option:")
@@ -207,7 +209,7 @@ def print_menu():
     print("0. Help \n")
     menu(pcap_file)
 
-
+# menu logic
 def menu(pcap):
     x = str(input())
     if x == "1":
