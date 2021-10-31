@@ -94,7 +94,7 @@ def hancitor_filter(pkt):
         if pkt.http.request_method == "POST":
             if "/8/forum.php" in pkt.http.request_uri:
                 print("Infected IP:" + pkt.ip.src)
-                print("Communicating From:" + pkt[pkt.transport_layer].srcport)
+                print("Communicating From Port Number:" + pkt[pkt.transport_layer].srcport)
                 print("Malicious HTTP Request:" + pkt.http.request_uri)
                 print("C2 Server:" + pkt.ip.dst)
                 print("Time:" + str(pkt.sniff_time))
@@ -103,7 +103,7 @@ def hancitor_filter(pkt):
         if pkt.http.request_method == "GET":
             if "api.ipify.org" in pkt.http.host:
                 print("Infected IP:" + pkt.ip.src)
-                print("Communicating From:" + pkt[pkt.transport_layer].srcport)
+                print("Communicating From Port Number:" + pkt[pkt.transport_layer].srcport)
                 print("Malicious HTTP Request:" + pkt.http.request_uri)
                 print("C2 Server:" + pkt.ip.dst)
                 print("Time:" + str(pkt.sniff_time))
