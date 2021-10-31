@@ -1,5 +1,5 @@
 
-from geoip import geolite2
+#from geoip import geolite2
 from scapy.all import *
 from pprint import pprint
 import sys
@@ -40,14 +40,19 @@ def virus_total_checker():
 
 
 def http_checker(pkt):
-    if pkt.http:
-        if pkt[pkt.transport_layer].srcport != 80 and pkt[pkt.transport_layer].srcport != 443:
-            print("Unusual HTTP Traffic")
-            print("Infected IP:" + pkt.ip.src)
-            print("Suspected URL: " + pkt.http.host)
-            print("Communicating From:" + pkt[pkt.transport_layer].srcport)
-            print("Malicious HTTP Request:" + pkt.http.request_uri)
+    try:
+        if pkt.http:
+            if pkt[pkt.transport_layer].srcport != 80 and pkt[pkt.transport_layer].srcport != 443 and pkt.http.host !="":
+                print("Unusual HTTP Traffic")
+                print("Infected IP:" + pkt.ip.src)
+                print("Suspected URL: " + pkt.http.host)
+                print("Communicating From:" + pkt[pkt.transport_layer].srcport)
+                print("Malicious HTTP Request:" + pkt.http.request_uri)
+                print("\n")
 
+    except AttributeError as e:
+        # ignore packets that aren't TCP/UDP or IPv4
+        pass
 
 # might want to include virus total api to check suspected URLs
 def find_unusual_http():
@@ -65,16 +70,19 @@ def find_unusual_http():
 
 
 def malware_checker(pkt):
-    if pkt.http.request_method == "GET":
-        if cobalt_list in pkt.http.request_uri:
-            print("Infected IP:" + pkt.ip.src)
-            print("Communicating From:" + pkt[pkt.transport_layer].srcport)
-            print("Malicious HTTP Request:" + pkt.http.request_uri)
-            print("C2 Server:" + pkt.ip.dst)
-            print("Time:" + str(pkt.sniff_time))
-            print("Traffic Purpose: Possible Hancitor IP Check")
-            print("\n")
-
+    try:
+        if pkt.http.request_method == "GET":
+            if pkt.http.request_uri in cobalt_list:
+                print("Infected IP:" + pkt.ip.src)
+                print("Communicating From:" + pkt[pkt.transport_layer].srcport)
+                print("Malicious HTTP Request:" + pkt.http.request_uri)
+                print("C2 Server:" + pkt.ip.dst)
+                print("Time:" + str(pkt.sniff_time))
+                print("Traffic Purpose: Possible Hancitor IP Check")
+                print("\n")
+    except AttributeError as e:
+        # ignore packets that aren't TCP/UDP or IPv4
+        pass
 
 def find_Cobalt_packet():
     pyshark_cap.apply_on_packets(malware_checker, timeout=100)
