@@ -109,7 +109,6 @@ def hancitor_filter(pkt):
                 print("Time:" + str(pkt.sniff_time))
                 print("Traffic Purpose: Possible Hancitor IP Check")
                 print("\n")
-        print("try")
     except AttributeError as e:
         # ignore packets that aren't TCP/UDP or IPv4
         pass
@@ -238,6 +237,6 @@ if __name__ == '__main__':
         # run the function that loads the pcap file for scapy
         pcap_file = load_pcap_file(fileLocation)
         # print menu
-        print_menu(pcap_file)
+        print_menu()
     else:
         print("File does not exist")
