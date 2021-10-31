@@ -6,6 +6,8 @@ import sys
 import pyshark
 from base64 import urlsafe_b64encode
 from virustotal_python import Virustotal
+import pyx
+from PyPDF2 import PdfFileMerger
 
 
 #file names from https://kc.mcafee.com/corporate/index?page=content&id=KB94571&locale=en_US
@@ -15,6 +17,93 @@ cobalt_list=['47.exe', "1901.bin", "1901s.bin", '2701.bin', "27012.bin", "0102.b
 #api key for virus total
 api_key = "1535becddc18e1fac97c7bdc8d8d2a0265d5f3be3646896b0c697b1cb38a6873"
 vt = Virustotal(api_key, API_VERSION="v3")
+
+
+def sniffing():
+    # loop for entering into menu
+    for i in range(0,1):
+      print("Enter 1 for ethernet interface eth1")
+      print("Enter 2 for ethernet interface eth0")
+      print("Enter 3 for wifi interface wifi0")
+      print("Enter 4 for auto detection of interface")
+      print("Enter 0 for Menu")
+
+    # input your desired choice
+      choice=int(input("Enter your choice:"))
+      try:
+        if choice == 1:
+              # if choice is interface eth1 then this option will work
+          n=int(input("Enter number of packets you want to sniff on:"))
+          data=sniff(iface="eth1", prn=lambda x: x.summary(), count=n)
+                # dump sniffed data into pdf
+          data.pdfdump("eth1.pdf")
+          # get pdfs to merge into 1
+          inputpdf = ['intro.pdf', 'eth1.pdf']
+          # call merge function
+          merging = PdfFileMerger()
+          # loop to append desired pdfs into 1
+          for pdf in inputpdf:
+            merging.append(pdf)
+            # writing merged pdf to a pdf file
+          merging.write("result.pdf")
+          merging.close()
+        elif choice == 2:
+              # if choice is interface eth0 then this option will work
+          n=int(input("Enter number of packets you want to sniff on:"))
+          data=sniff(iface="eth0", prn=lambda x: x.summary(), count=n)
+                # dump sniffed data into pdf
+          data.pdfdump("eth0.pdf")
+          # get pdfs to merge into 1
+          inputpdf = ['intro.pdf', 'eth0.pdf']
+          # call merge function
+          merging = PdfFileMerger()
+          # loop to append desired pdfs into 1
+          for pdf in inputpdf:
+            merging.append(pdf)
+              # writing merged pdf to a pdf file
+          merging.write("result.pdf")
+          merging.close()
+        elif choice == 3:
+              # if choice is interface wifi0 then this option will work
+          n=int(input("Enter number of packets you want to sniff on:"))
+          data=sniff(iface="wifi0", prn=lambda x: x.summary(), count=n)
+                # dump sniffed data into pdf
+          data.pdfdump("wifi0.pdf")
+          # get pdfs to merge into 1
+          inputpdf = ['intro.pdf', 'wifi0.pdf']
+          # call merge function
+          merging = PdfFileMerger()
+          # loop to append desired pdfs into 1
+          for pdf in inputpdf:
+            merging.append(pdf)
+            # writing merged pdf to a pdf file
+          merging.write("result.pdf")
+          merging.close()
+        elif choice == 4:
+              # if choice is auto interface then this option will work
+          n=int(input("Enter number of packets you want to sniff on:"))
+          data=sniff(prn=lambda x: x.summary(), count=n)
+                # dump sniffed data into pdf
+          data.pdfdump("auto.pdf")
+          # get pdfs to merge into 1
+          inputpdf = ['intro.pdf', 'auto.pdf']
+          # call merge function
+          merging = PdfFileMerger()
+          # loop to append desired pdfs into 1
+          for pdf in inputpdf:
+            merging.append(pdf)
+            # writing merged pdf to a pdf file
+          merging.write("result.pdf")
+          merging.close()
+        elif choice == 0:
+          print_menu()
+        else:
+          # if choice doesn't match menu items
+          print("Invalid choice:")
+      except OSError:
+        # print error
+        print("OSError :Invalid interface")
+
 
 #function to check urls against virustotal database for whether it is malicious
 def virus_total_checker():
@@ -39,7 +128,7 @@ def virus_total_checker():
         print_menu()
 
 
-# filter to check for http traffic from non standard ports  
+# filter to check for http traffic from non standard ports
 def http_checker(pkt):
     try:
         if pkt.http:
@@ -206,6 +295,7 @@ def print_menu():
     print("2. Check for LOKIBot IOCs ")
     print("3. Check for Hancitor Malware IOCs")
     print("4. Check for Unusual HTTP traffic")
+    print("5. Sniffing")
     print("0. Help \n")
     menu(pcap_file)
 
@@ -220,6 +310,8 @@ def menu(pcap):
         find_Hancitor_packet()
     elif x == "4":
         find_unusual_http()
+    elif x == "5":
+        sniffing()
     elif x == "0":
         help_description(pcap)
     elif x == "exit":
