@@ -36,4 +36,4 @@ The pcap files included in this github page, contain malware. It is recommended 
 
 ## Instructions 
 run the python script with file location as an argument  
-`analyzer.py file.pcap` 
+`python3 analyzer.py file.pcap` 
