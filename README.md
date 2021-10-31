@@ -33,3 +33,7 @@ Plenty of malware avoid common signatures, which makes it hard to confirm whethe
 
 ### Warning
 The pcap files included in this github page, contain malware. It is recommended that if this script is to be used that it should be in a safe and isolated environment like a Linux Virtual Machine. The password for the zip file is "infected". The pcap files are sourced from R3MRUM github page for the Loki traffic and Palo Alto's Unit 42 Github for the Hancitor Traffic.
+
+## Instructions 
+run the python script with file location as an argument  
+`analyzer.py file.pcap` 
