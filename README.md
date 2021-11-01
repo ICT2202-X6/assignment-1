@@ -40,4 +40,5 @@ run the python script with file location as an argument
 
 ## Troubleshooting
 
-For the Sniffing option, the tool has to be run as root and there has to be traffic.
+For the Sniffing option, the tool has to be run as root.  
+Python modules are installed in the user home directory, when you run scripts as root, you must ensure that the root user has those modules installed as well.
