@@ -11,7 +11,7 @@ Pyshark: `pip3 install pyshark`
 PPrint: `pip3 install pprintpp`  
 VirusTotal-Python: `pip3 install virustotal-python`   
 Python Graphics Package: `pip3 install PyX==0.15`  
-Python PDF Toolkit: `pip3 install PyX==0.15`  
+Python PDF Toolkit: `pip3 install  PyPDF2`  
 texlive-binaries to be installed on linux:`apt install texlive-binaries`  
 
 
