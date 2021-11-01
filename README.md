@@ -12,7 +12,7 @@ PPrint: `pip3 install pprintpp`
 VirusTotal-Python: `pip3 install virustotal-python`   
 Python Graphics Package: `pip3 install PyX==0.15`  
 Python PDF Toolkit: `pip3 install  PyPDF2`  
-texlive-binaries to be installed on linux:`apt install texlive-binaries`  
+texlive-binaries to be installed on linux:`apt install texlive-latex-base`
 
 
 ## Options 
@@ -37,3 +37,7 @@ The pcap files included in this github page, contain malware. It is recommended 
 ## Instructions 
 run the python script with file location as an argument  
 `python3 analyzer.py file.pcap` 
+
+## Troubleshooting
+
+For the Sniffing option, the tool has to be run as root and there has to be traffic.
