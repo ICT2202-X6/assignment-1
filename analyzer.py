@@ -281,6 +281,7 @@ def help_description():
     print("LokiBot IOCs : The program will go through the pcap and identify possible LokiBot traffic")
     print("Hancitor IOCs : The program will go through the pcap file and identify any possible Hancitor traffice and then give users the option to check for any malware installation from the Hancitor trojan")
     print("Unusual HTTP Traffic : The program will go through the pcap file and identify Unusual HTTP traffic")
+    print("Packet Sniffing : This option will allows users to choose the interface and the number of packets to capture and output into a readable pdf with the packet information displayed clearly
     print("Press 0 to return to menu")
     x = int(input())
     if x == 0:
