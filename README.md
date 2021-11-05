@@ -37,7 +37,7 @@ The pcap files included in this github page, contain malware. It is recommended 
 ## Instructions 
 Running the analyzer without any arguments will launch to a menu that only gives the option to load a pcap file or go straight to the sniffing feature.
 `python3 analyzer.py`  
-![image](https://user-images.githubusercontent.com/22877622/140531791-0578fb8c-b6f1-4e6f-a03c-290ee11397b6.png)
+![image](https://user-images.githubusercontent.com/22877622/140532206-d41e5cd9-1706-43f2-b1f6-ace8495c3bc9.png)
 
 with the file location as an argument, the tool will present the full featured menu
 `python3 analyzer.py file.pcap` 
