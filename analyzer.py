@@ -342,7 +342,7 @@ if __name__ == '__main__':
         x = str(input())
         if x == "1":
           sniffing()
-        elif x == "2"
+        elif x == "2":
           print("Enter File Location")
           fileLocation = str(input())
           # run the function that loads the pcap file for pyshark
