@@ -29,14 +29,20 @@ Hancitor is another very commonly used trojan that is used to load other malware
 Plenty of malware avoid common signatures, which makes it hard to confirm whether traffic is malicious or not, however, there are malwares that use web traffic for malicious purposes but do so using non standard port numbers. This tool filters the pcap file for such traffic. We can then further compare the url with virus total's database and check if it is a known malicious url. The api used is for a free account that only allows for 4 url checks per minute. 
 
 ### 5. Sniffing
-This options allows the user to choose the interface to sniff packets on. it then creates a readable pdf that clearly goes through the contents of the packet.
+This options allows the user to choose the interface to sniff packets on. it then creates a readable pdf that clearly goes through the contents of the packet and create a pcap file.
 
 ### Warning
 The pcap files included in this github page, contain malware. It is recommended that if this script is to be used that it should be in a safe and isolated environment like a Linux Virtual Machine. The password for the zip file is "infected". The pcap files are sourced from R3MRUM github page for the Loki traffic and Palo Alto's Unit 42 Github for the Hancitor Traffic.
 
 ## Instructions 
-run the python script with file location as an argument  
+Running the analyzer without any arguments will launch to a menu that only gives the option to load a pcap file or go straight to the sniffing feature.
+`python3 analyzer.py` 
+![image](https://user-images.githubusercontent.com/22877622/140531791-0578fb8c-b6f1-4e6f-a03c-290ee11397b6.png)
+
+with the file location as an argument, the tool will present the full featured menu
 `python3 analyzer.py file.pcap` 
+![image](https://user-images.githubusercontent.com/22877622/140531953-b6c683d1-db00-45c3-8d63-e603aa56b16b.png)
+
 
 ## Troubleshooting
 
