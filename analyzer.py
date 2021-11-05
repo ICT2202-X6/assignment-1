@@ -331,15 +331,28 @@ def menu(pcap):
 def load_pcap_file(pcap):
     pcap = rdpcap(pcap)
     return pcap
-
+          
 
 if __name__ == '__main__':
 
     # taking cli argument for the path of the pcap file currently needs quotation marks for the filepath
     if len(sys.argv)<2:
-        print("Please include pcap file location")
-        print("python3 script.py test.pcap")
-        exit()
+        print("1. Sniffing")
+        print("2. Load PCAP file")
+        x = str(input())
+        if x = "1":
+          sniffing()
+        elif x = "2"
+          print("Enter File Location")
+          fileLocation = str(input())
+          # run the function that loads the pcap file for pyshark
+          pyshark_cap = pyshark.FileCapture(fileLocation)
+          # run the function that loads the pcap file for scapy
+          pcap_file = load_pcap_file(fileLocation)
+          # print menu
+          print_menu()
+        else:
+          exit()
     else:
         fileLocation = sys.argv[1]
 
