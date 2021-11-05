@@ -35,6 +35,8 @@ def sniffing():
               # if choice is interface eth1 then this option will work
           n=int(input("Enter number of packets you want to sniff on:"))
           data=sniff(iface="eth1", prn=lambda x: x.summary(), count=n)
+                # generate pcap file
+          pcapdata=wrpcap('eth.pcap',data)
                 # dump sniffed data into pdf
           data.pdfdump("eth1.pdf")
           # get pdfs to merge into 1
@@ -51,6 +53,8 @@ def sniffing():
               # if choice is interface eth0 then this option will work
           n=int(input("Enter number of packets you want to sniff on:"))
           data=sniff(iface="eth0", prn=lambda x: x.summary(), count=n)
+                # generate pcap file
+          pcapdata=wrpcap('eth.pcap',data)
                 # dump sniffed data into pdf
           data.pdfdump("eth0.pdf")
           # get pdfs to merge into 1
@@ -67,6 +71,8 @@ def sniffing():
               # if choice is interface wifi0 then this option will work
           n=int(input("Enter number of packets you want to sniff on:"))
           data=sniff(iface="wifi0", prn=lambda x: x.summary(), count=n)
+                # generate pcap file
+          pcapdata=wrpcap('eth.pcap',data)
                 # dump sniffed data into pdf
           data.pdfdump("wifi0.pdf")
           # get pdfs to merge into 1
@@ -83,6 +89,8 @@ def sniffing():
               # if choice is auto interface then this option will work
           n=int(input("Enter number of packets you want to sniff on:"))
           data=sniff(prn=lambda x: x.summary(), count=n)
+                # generate pcap file
+          pcapdata=wrpcap('eth.pcap',data)
                 # dump sniffed data into pdf
           data.pdfdump("auto.pdf")
           # get pdfs to merge into 1
