@@ -340,9 +340,9 @@ if __name__ == '__main__':
         print("1. Sniffing")
         print("2. Load PCAP file")
         x = str(input())
-        if x = "1":
+        if x == "1":
           sniffing()
-        elif x = "2"
+        elif x == "2"
           print("Enter File Location")
           fileLocation = str(input())
           # run the function that loads the pcap file for pyshark
