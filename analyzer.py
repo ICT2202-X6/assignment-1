@@ -300,6 +300,7 @@ def print_menu():
     print("PCAP Analysis")
     print("Choose an Option:")
     print("type exit to end")
+    print("Type load to load pcap")
     print("1. View Sessions ")
     print("2. Check for LOKIBot IOCs ")
     print("3. Check for Hancitor Malware IOCs")
@@ -325,6 +326,15 @@ def menu(pcap):
         help_description(pcap)
     elif x == "exit":
         exit()
+    elif x == "load":
+        print("Enter File Location")
+        fileLocation = str(input())
+        # run the function that loads the pcap file for pyshark
+        pyshark_cap = pyshark.FileCapture(fileLocation)
+        # run the function that loads the pcap file for scapy
+        pcap_file = load_pcap_file(fileLocation)
+        # print menu
+        print_menu()
 
 
 # function to read pcap file
