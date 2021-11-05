@@ -297,6 +297,7 @@ def help_description():
 
 # simple menu
 def print_menu():
+    print("\n")
     print("PCAP Analysis")
     print("Choose an Option:")
     print("type exit to end")
