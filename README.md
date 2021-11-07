@@ -2,6 +2,8 @@
 
 PCAP Analyzer is a tool used to gather interesting information from the give pcap file. It was made as an Assignment for Module 2202 Digital Forensics from the Singapore Institute of Technology.
 
+Video demostration of our tool here: https://youtu.be/x6BxVM3tXOo
+
 ## Requirements
 This tool was made in python3 and it is not recommended to be used in python 2.
 This tool requires the following libraries installed to function, Scapy, Pyshark, PPrint and Virustotal-python.
@@ -29,7 +31,7 @@ Hancitor is another very commonly used trojan that is used to load other malware
 Plenty of malware avoid common signatures, which makes it hard to confirm whether traffic is malicious or not, however, there are malwares that use web traffic for malicious purposes but do so using non standard port numbers. This tool filters the pcap file for such traffic. We can then further compare the url with virus total's database and check if it is a known malicious url. The api used is for a free account that only allows for 4 url checks per minute. 
 
 ### 5. Sniffing
-This options allows the user to choose the interface to sniff packets on. it then creates a readable pdf that clearly goes through the contents of the packet and create a pcap file.
+This options allows the user to sniff packets on their current network interface. It then creates a readable pdf file that helps to assist in explaining the contents of the what the sniffed data means. Alongside that, it creates a pcap file for each sniffing session allowing it to be used against the other four features mentioned above.
 
 ### Warning
 The pcap files included in this github page, contain malware. It is recommended that if this script is to be used that it should be in a safe and isolated environment like a Linux Virtual Machine. The password for the zip file is "infected". The pcap files are sourced from R3MRUM github page for the Loki traffic and Palo Alto's Unit 42 Github for the Hancitor Traffic.
